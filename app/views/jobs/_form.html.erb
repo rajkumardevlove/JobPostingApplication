@@ -1,0 +1,36 @@
+<%= form_with(model: job, local: true) do |f| %>
+  <% if job.errors.any? %>
+    <div class="alert alert-danger">
+      <ul>
+        <% job.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :title %>
+    <%= f.text_field :title, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :company %>
+    <%= f.text_field :company_name, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :location %>
+    <%= f.text_field :location, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :description %>
+    <%= f.text_area :description, class: "form-control", rows: 5 %>
+  </div>
+
+   <div class="mt-4 d-flex gap-2">
+  <%= f.submit class: "btn btn-success mt-3" %>
+  <%= link_to 'Back to Jobs', jobs_path, class: "btn btn-secondary mt-3" %>
+  </div>
+<% end %>
