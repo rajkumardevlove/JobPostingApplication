@@ -117,4 +117,11 @@ Rails.application.configure do
   # config.active_record.database_selector = { delay: 2.seconds }
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
+
+  # 55 Removed Removed deprecated Rails.application.credentials.action_mailbox.mailgun_api_key.
+  # Removed deprecated environment variable MAILGUN_INGRESS_API_KEY.
+  config.action_mailbox.ingress = :mailgun
+  config.action_mailbox.mailgun_api_key = ENV['MAILGUN_API_KEY'] 
+
+  # MAILGUN_API_KEY=your_mailgun_api_key_here
 end

@@ -23,3 +23,25 @@ test:
 production:
   <<: *default
   database: db/production.sqlite3
+
+# 21. removed spec_name 
+# db_config = ActiveRecord::Base.configs_for(env: "development", spec_name: "primary")
+
+# 20. and 25. connected_to removed
+# ActiveRecord::Base.connected_to(role: :reading, database: :test_db) do
+#   # code here will use the primary_replica DB in reading role
+# end
+
+# 20. and 25. connected_to removed
+# class PrimaryReplicaRecord < ApplicationRecord
+#   connects_to database: { reading: :test_db }
+# end
+
+# 22. yaml loader removed
+# ActiveRecord::Base.load_yaml('path_to_4.1_or_4.2_file.yml');
+
+# 29. Remove Deprecated `DatabaseConfig#config` Method
+# config = ActiveRecord::Base.connection_config
+
+# db_config = ActiveRecord::Base.connection_db_config
+# config_hash = db_config.configuration_hash
