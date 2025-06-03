@@ -5,10 +5,22 @@ class JobsController < ApplicationController
   before_action :authorize_admin!, except: [:index, :show]
 
   def index
+    @current_time = Time.current.to_s(:db) # 4 => 6.1 - 7.0
     @jobs = Job.all
   end
 
   def show
+    # 52 => 6.1 - 7.0
+    # deprecated in Rails 6.1.7+
+    date_range = DateTime.now..(DateTime.now + 1.day)
+    if date_range.cover?(DateTime.now)
+      puts "Date is within the range"
+    end
+
+    # 54 => 6.1 - 7.0
+    MyJob.perform_later('hello')
+    # => The job will NOT be enqueued because before_enqueue throws :abort
+    # => The after_enqueue callback will NOT run due to skip_after_callbacks_if_terminated = true
   end
 
   def new

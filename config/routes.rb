@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
 
   resources :jobs do
-    resources :applications, only: [:create, :destroy]
+    resources :applications, only: [:create, :destroy, :show]
   end
 
   root 'jobs#index'

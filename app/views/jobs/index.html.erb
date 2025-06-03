@@ -1,6 +1,10 @@
 <h1>All Jobs</h1>
+<%# 9 => 6.0 - 7.0%>
+<%= image_tag "logo.png" %> 
+<%# image_tag transformed_image_path('images/logo.png', 500, 500) %> 
 
 <% if user_signed_in? && current_user.admin? %>
+<p>Current Time <%= @current_time %></p>
 <div class="d-flex justify-content-end mb-3">
   <%= link_to 'Post New Job', new_job_path, class: "btn btn-success" if user_signed_in? %>
 </div>
