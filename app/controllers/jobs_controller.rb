@@ -9,7 +9,23 @@ class JobsController < ApplicationController
   def index
     # @current_time = Time.current.to_s(:db) # 4 => 6.1
     @current_time = Time.current.to_fs(:db) # 4 => 7.0
-    @jobs = Job.all
+    @jobs = Rails.cache.fetch("jobs_all", expires_in: 1.minutes) do
+      Job.all.to_a
+    end
+
+    ttl = $redis.ttl("jobs_all") 
+    puts "Time to live #{ttl}"
+
+    # Store a value
+    if $redis.exists?("mykey")
+      puts "Key is available"
+    else 
+      $redis.set("mykey", "Hello, Redis!")
+    end
+    # Retrieve a value
+    value = $redis.get("mykey")
+    puts value # => "Hello, Redis!"
+  
   end
 
   def show
