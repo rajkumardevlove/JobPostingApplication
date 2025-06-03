@@ -1,0 +1,1 @@
+Rails.application.config.active_job.skip_after_callbacks_if_terminated = false
