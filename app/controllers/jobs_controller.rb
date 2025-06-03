@@ -169,6 +169,12 @@ json_data = Marshal.dump(model.attribute_set)
 restored_data = JSON.parse(json_data)
 
 
+    # 53 default_normalization_form removed
+    puts ActiveSupport::Multibyte::Unicode.default_normalization_form
+    # Possible output: :nfc (default for many Rails apps)
+
+    #Remove the configuration line entirely and handle normalization as needed:
+    # string = "some string".mb_chars.normalize(:nfc);
 
   end
 

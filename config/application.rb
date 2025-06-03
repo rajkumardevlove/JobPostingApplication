@@ -17,7 +17,7 @@ module JobPostingApplication
     #17(i) ActionDispatch::Response - Using return_only_media_type_on_content_type
     response = ActionDispatch::Response.new(200)
     response.content_type = "text/html; charset=utf-8"
-    puts response.return_only_media_type_on_content_type # Expected output: "text/html"
+    # puts response.return_only_media_type_on_content_type # Expected output: "text/html"
 
     #17(ii) Configuration - Using action_dispatch.hosts_response_app
     Rails.application.config.action_dispatch.hosts_response_app = ->(env) { [403, {}, ["Forbidden"]] }
