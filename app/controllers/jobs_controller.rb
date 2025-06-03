@@ -13,8 +13,8 @@ class JobsController < ApplicationController
   def show
     # 26. pass user with accessing property
     user = User.find_by(email: 'rajkumar@gmail.com')
-    puts User.where(id: user) // passing user object directly is deprecated
-    # puts User.where(id: user.id) // pass with id
+    # puts User.where(id: user) // passing user object directly is deprecated
+    puts User.where(id: user.id).to_a  // pass with id
 
     # 27.
     user = User.first
