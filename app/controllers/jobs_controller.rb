@@ -12,23 +12,12 @@ class JobsController < ApplicationController
   end
 
   def show
-    # 52 => 6.1 - 7.0
-    # deprecated in Rails 6.1.7+
-    date_range = DateTime.now..(DateTime.now + 1.day)
-    if date_range.cover?(DateTime.now)
-      puts "Date is within the range"
-    end
-
-    # 54 => 6.1 - 7.0
-    MyJob.perform_later('hello')
-    # => The job will NOT be enqueued because before_enqueue throws :abort
-    # => The after_enqueue callback will NOT run due to skip_after_callbacks_if_terminated = true
     # 26. pass user with accessing property
     user = User.find_by(email: 'rajkumar@gmail.com')
     # puts User.where(id: user) // passing user object directly is deprecated
     puts User.where(id: user.id).to_a  // pass with id
 
-    # 27.
+    # 27. Deprecated below code
     user = User.first
     # Type cast attributes to database values
     email_db_value = user.class.attribute_types["email"].serialize(user.email)
@@ -40,11 +29,10 @@ class JobsController < ApplicationController
     # Automatic typecast supported
     # User.where(email: user.name) 
 
-    # 31 
+    # 31 Deprecated Below Code
     User.reorder(nil).first // removes any default ordering that might be present in the model definition or previous query scopes
 
     # puts 'User.order(:created_at).first'
-
 
     # 32 Remove below methods
     env = "development"
@@ -180,6 +168,13 @@ errors.messages[:attribute] = ["error"]
 json_data = Marshal.dump(model.attribute_set)
 restored_data = JSON.parse(json_data)
 
+    # 52 => 6.1 - 7.0
+    # deprecated in Rails 6.1.7+
+    date_range = DateTime.now..(DateTime.now + 1.day)
+    if date_range.cover?(DateTime.now)
+      puts "Date is within the range"
+    end
+
 
     # 53 default_normalization_form removed
     puts ActiveSupport::Multibyte::Unicode.default_normalization_form
@@ -187,6 +182,11 @@ restored_data = JSON.parse(json_data)
 
     #Remove the configuration line entirely and handle normalization as needed:
     # string = "some string".mb_chars.normalize(:nfc);
+
+    # 54 => 6.1 - 7.0
+    MyJob.perform_later('hello')
+    # => The job will NOT be enqueued because before_enqueue throws :abort
+    # => The after_enqueue callback will NOT run due to skip_after_callbacks_if_terminated = true
 
   end
 
