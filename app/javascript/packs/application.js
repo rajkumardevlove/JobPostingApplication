@@ -3,7 +3,8 @@
 // a relevant structure within app/javascript and only use these pack files to reference
 // that code so it'll be compiled.
 
-import Rails from "@rails/ujs" // 8 => 6.1 - 7.0
+import Rails from "@rails/ujs" // 8 => 6.1
+import { Turbo } from "turbo-rails" // 8 => 7.0
 import Turbolinks from "turbolinks"
 import * as ActiveStorage from "@rails/activestorage"
 import "channels"

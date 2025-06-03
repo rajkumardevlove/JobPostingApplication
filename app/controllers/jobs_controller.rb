@@ -7,7 +7,8 @@ class JobsController < ApplicationController
   before_action :authorize_admin!, except: [:index, :show]
 
   def index
-    @current_time = Time.current.to_s(:db) # 4 => 6.1 - 7.0
+    # @current_time = Time.current.to_s(:db) # 4 => 6.1
+    @current_time = Time.current.to_fs(:db) # 4 => 7.0
     @jobs = Job.all
   end
 
