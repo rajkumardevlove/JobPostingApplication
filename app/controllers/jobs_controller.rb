@@ -216,8 +216,12 @@ restored_data = JSON.parse(json_data)
   end
 
   def destroy
-    @job.destroy
-    redirect_to jobs_url, notice: 'Job was successfully destroyed.'
+   @job.destroy
+
+    respond_to do |format|
+      format.turbo_stream   # => renders destroy.turbo_stream.erb
+      format.html { redirect_to jobs_path, notice: "Job deleted." }
+    end
   end
 
   private

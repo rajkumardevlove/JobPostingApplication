@@ -1,22 +1,41 @@
 <h1>All Jobs</h1>
-<%# 9 => 6.0 - 7.0 %>
-<%= image_tag "logo.png" %> 
+
+<%= image_tag "logo.png" %>
 <%# image_tag transformed_image_path('images/logo.png', 500, 500) %> 
 
 <% if user_signed_in? && current_user.admin? %>
-<p>Current Time <%= @current_time %></p>
-<div class="d-flex justify-content-end mb-3">
-  <%= link_to 'Post New Job', new_job_path, class: "btn btn-success" if user_signed_in? %>
-</div>
+  <p>Current Time <%= @current_time %></p>
+
+  <div class="d-flex justify-content-end mb-3">
+    <!-- leave the frame when creating a new job -->
+    <%= link_to "Post New Job",
+                new_job_path,
+                class: "btn btn-success",
+                data: { turbo_frame: "_top" } %>
+  </div>
 <% end %>
 
+<!-- ── Details pane (will be swapped in) ───────────────────────────── -->
+<turbo-frame id="job_details">
+  <p class="text-muted">Select a job to see details …</p>
+</turbo-frame>
+
+<!-- ── Job list ─────────────────────────────────────────────────────── -->
 <% @jobs.each do |job| %>
   <div class="card mb-3">
     <div class="card-body">
-      <h4><%= link_to job.title, job_path(job) %></h4>
+      <h4>
+        <!-- load the show page *into* the frame -->
+        <%= link_to job.title,
+                    job_path(job),
+                    data: { turbo_frame: "job_details" } %>
+      </h4>
+
       <p><strong>Company Name:</strong> <%= job.company_name %></p>
       <p><strong>Location:</strong> <%= job.location %></p>
-      <p><strong>Job Description:</strong> <%= truncate(job.description, length: 150) %></p>
+      <p><strong>Job Description:</strong>
+         <%= truncate(job.description, length: 150) %>
+      </p>
     </div>
   </div>
 <% end %>

@@ -1,0 +1,5 @@
+<%= turbo_stream.remove "job_details" %>
+
+<%= turbo_stream.append "flash",
+      partial: "shared/flash",
+      locals: { notice: "Job was deleted." } %>
