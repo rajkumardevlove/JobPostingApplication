@@ -1,5 +1,7 @@
-<%# form_with(model: job, local: true, remote: true) do |f| %> #6 Form Submission (AJAX) : 6.1
-<%= form_with(model: job, local: true) do |f| %> #6 Form Submission (AJAX) : 7.0
+<!-- 6 Form Submission (AJAX) : 6.1 -->
+<%# form_with(model: job, local: true, remote: true) do |f| #%> 
+<!-- 6 Form Submission (AJAX) : 7.0 -->
+<%= form_with(model: job, local: true) do |f| %> 
   <% if job.errors.any? %>
     <div class="alert alert-danger">
       <ul>
