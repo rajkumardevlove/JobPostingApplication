@@ -14,28 +14,28 @@ class JobsController < ApplicationController
 
   def show
     # 26. pass user with accessing property
-    user = User.find_by(email: 'rajkumar@gmail.com')
-    # puts User.where(id: user) // passing user object directly is deprecated
-    # puts User.where(id: user.id).to_a  // pass with id
+    user = Job.find_by(title: 'Java')
+    # puts Job.where(id: user) # passing user object directly is deprecated in 6.1
+    Job.where(title: user.title).to_a  # pass with title in 7.0
 
     # 27. Deprecated below code
-    user = User.first
+    user = Job.first
     # Type cast attributes to database values
-    email_db_value = user.class.attribute_types["email"].serialize(user.email)
-    User.where(email: email_db_value) 
+    email_db_value = user.class.attribute_types["title"].serialize(user.title)
+    Job.where(title: email_db_value) 
 
     # 28 no need manulal typecast anymore
-    # User.where(email: User.type_cast("John"))
+    #  Job.where(title: Job.type_cast("Java"))
 
     # Automatic typecast supported
-    User.where(email: user.email) 
+    Job.where(title: user.title) 
 
     # 31 Deprecated Below Code
-    # User.reorder(nil).first // removes any default ordering that might be present in the model definition or previous query scopes
+    # Job.reorder(nil).first # removes any default ordering that might be present in the model definition or previous query scopes
 
     # puts 'User.order(:created_at).first'
 
-    # 32 Remove below methods
+    # 32 Remove below methods in 6.1
     # env = "development"
     # db_name = "primary"
 
@@ -45,90 +45,87 @@ class JobsController < ApplicationController
     # up_to_date = ActiveRecord::Tasks::DatabaseTasks.schema_up_to_date?
     # puts "Schema up to date? #{up_to_date}"
 
+    # 33 Removed below methods and no replacements in 6.1
     # Generate database dump filename
     # filename = ActiveRecord::Tasks::DatabaseTasks.dump_filename("development")
     # puts "Dump Filename: #{filename}"
 
-    # # Get the path to the schema file
+    # Get the path to the schema file
     # schema_path = ActiveRecord::Tasks::DatabaseTasks.schema_file("development")
     # puts "Schema File: #{schema_path}"
 
-    # # Get the database specification for the environment
+    # Get the database specification for the environment
     # db_spec = ActiveRecord::Tasks::DatabaseTasks.spec("development")
     # puts "Database Spec: #{db_spec.inspect}"
 
-    # # Retrieve the current database configuration
+    # Retrieve the current database configuration
     # current_config = ActiveRecord::Tasks::DatabaseTasks.current_config
     # puts "Current Database Config: #{current_config.inspect}"
 
-    # 33 Removed below methods and no replacements
     # ActiveRecord::Tasks::DatabaseTasks.dump_filename = "db/custom_schema.rb"
     # ActiveRecord::Tasks::DatabaseTasks.schema_file = "db/schema.rb"
     # ActiveRecord::Tasks::DatabaseTasks.spec = Rails.application.config.database_configuration
 
-    # 34 Removed below behaviours
+    # 34 Removed below behaviours in 6.1
     # max_in_length = ActiveRecord::Base.connection.in_clause_length
     # puts "Max allowed IN clause length: #{max_in_length}"
 
     # max_length = ActiveRecord::Base.connection.allowed_index_name_length
     # puts "Max allowed index name length: #{max_length}"
 
-    # 35 Removed Below Behaviours
+    # 35 Removed Below Behaviours in 6.1
+    # Fetch spec name from database configurations
+    # config = ActiveRecord::Base.configurations.configs_for(env: "development", spec_name: "primary")
+    # puts "Database Spec Name: #{config.spec_name}"
 
-# Fetch spec name from database configurations
-# config = ActiveRecord::Base.configurations.configs_for(env: "development", spec_name: "primary")
-# puts "Database Spec Name: #{config.spec_name}"
+    # Get the current connection config
+    # connection_config = ActiveRecord::Base.connection_config
+    # puts "Current Connection Config: #{connection_config.inspect}"
 
-# Get the current connection config
-# connection_config = ActiveRecord::Base.connection_config
-# puts "Current Connection Config: #{connection_config.inspect}"
+    # Convert attribute into Arel representation (useful for dynamic queries)
+    # email_attr = User.arel_attribute(:email)
+    # puts "Arel Attribute for Email: #{email_attr.to_sql}"
 
-# # Convert attribute into Arel representation (useful for dynamic queries)
-# email_attr = User.arel_attribute(:email)
-# puts "Arel Attribute for Email: #{email_attr.to_sql}"
+    # Retrieve the default database config hash
+    # default_db_config = ActiveRecord::Base.configurations.default_hash
+    # puts "Default Database Config Hash: #{default_db_config.inspect}"
 
-# Retrieve the default database config hash
-# default_db_config = ActiveRecord::Base.configurations.default_hash
-# puts "Default Database Config Hash: #{default_db_config.inspect}"
+    # Convert all configurations into a hash representation
+    # all_db_configs = ActiveRecord::Base.configurations.to_h
+    # puts "All Database Configurations: #{all_db_configs.inspect}"
 
-# Convert all configurations into a hash representation
-# all_db_configs = ActiveRecord::Base.configurations.to_h
-# puts "All Database Configurations: #{all_db_configs.inspect}"
+    # 36 Remove deprecated ActiveRecord::Result#map! and ActiveRecord::Result#collect!. in 6.1
+    # result = Job.where(title: 'C#').to_a
+    # result.map! { |user| user.title }  # Mutates the result directly
 
-# 36 Remove deprecated ActiveRecord::Result#map! and ActiveRecord::Result#collect!.
+    # result.collect! { |user| user.title }  # mutating collect
 
-# result = User.where(email: 'Alice@gmail.com')
-# result.map! { |user| user.email }  # Mutates the result directly
+    # result = Job.where(title: 'Alice').to_a
+    # result.map { |user| user.title }  # Safe non-mutating version
 
-# result.collect! { |user| user.email }  # mutating collect
-
-# result = User.where(name: 'Alice')
-# result.map { |user| user.name }  # Safe non-mutating version
-
-# result.collect { |user| user.name }  # Non-mutating collect
+    # result.collect { |user| user.title }  # Non-mutating collect
 
 
-# 37 Removed below methods
-# Disconnect from the database
-# ActiveRecord::Base.remove_connection
+    # 37 Removed below methods
+    # Disconnect from the database
+    # ActiveRecord::Base.remove_connection
 
-# Disconnect from the database using connection pool
-# ActiveRecord::Base.connection_pool.disconnect!
+    # Disconnect from the database using connection pool in 7.0
+    # ActiveRecord::Base.connection_pool.disconnect!
 
 
-# 38 schema_file_type is deprecated
+    # 38 schema_file_type is deprecated
+    # if Tasks::DatabaseTasks.schema_file_type == :ruby
+    #   rake db:schema:load
+    # else
+    #   rake db:structure:load
+    # end
 
-# if Tasks::DatabaseTasks.schema_file_type == :ruby
-#   rake db:schema:load
-# else
-#   rake db:structure:load
-# end
-
-# if Rails.configuration.active_record.schema_format == :ruby
-#   rake db:schema:load
-# else
-#   rake db:structure:load
-# end
+    # if Rails.configuration.active_record.schema_format == :ruby
+    #   rake db:schema:load
+    # else
+    #   rake db:structure:load
+    # end
 
 # 39 Remove deprecated enumeration of ActiveModel::Errors instances as a Hash.
 # errors.each { |key, messages| puts "#{key}: #{messages}" }
