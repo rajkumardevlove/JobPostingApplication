@@ -1,5 +1,7 @@
 # app/controllers/jobs_controller.rb
 require "active_record"
+# 4 (rails 7.0) cannot manually require files from these paths
+# require "my_custom_service"  # works, due to $LOAD_PATH
 
 class JobsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
@@ -13,6 +15,9 @@ class JobsController < ApplicationController
   end
 
   def show
+    # 4 (rails 7.1) Zeitwerk autoloads it
+    service = MyCustomService.new
+    puts service.call
     # 26. pass user with accessing property
     user = Job.find_by(title: 'Java')
     # puts Job.where(id: user) # passing user object directly is deprecated in 6.1
@@ -185,6 +190,49 @@ class JobsController < ApplicationController
     MyJob.perform_later('hello')
     # => The job will NOT be enqueued because before_enqueue throws :abort
     # => The after_enqueue callback will NOT run due to skip_after_callbacks_if_terminated = true
+
+    # 3. (rails 7.0) 
+    # job = Job.find(1)
+    # result = job.update_attribute(:title, "Alice")
+    # puts "Update result: #{result}"
+
+    # (rails 7.1)
+    job = Job.find(1)
+    begin
+    # This also skips validations...
+    # BUT raises an exception if save fails
+    job.update_attribute!(:title, "Alice")
+    puts "Name updated successfully!"
+    rescue ActiveRecord::RecordNotSaved => e
+    puts "Failed to save: #{e.message}"
+    end
+
+    # 12 (rails 7.0) no longer available in 7.1
+    # Set globally in a background job
+    # ActiveStorage::Current.host = "http://localhost:3000"
+
+    # Later used by service_url helpers
+    # url = user.avatar.service_url
+
+    # rails 7.1
+    user.avatar.url # host is derived from `request.base_url`
+
+    # 13 Result: BOTH files are attached in rails 7.0
+    # @user.files.attach(io: ..., filename: "file1.pdf")
+    # @user.files.attach(io: ..., filename: "file2.pdf")
+
+    # rails 7.1
+    user.files = [
+    { io: File.open("new.pdf"), filename: "new.pdf" }
+    ]
+
+    # 14 (rails 7.0) purge and purge_later
+    # user.files.first.purge       # Worked
+    # user.files.first.purge_later # Worked
+
+    # Rails 7.1
+    user.documents.each(&:purge_later)  
+
 
   end
 
