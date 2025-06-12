@@ -75,3 +75,8 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'image_processing', '~> 1.2'
 gem 'mini_magick'
 
+# Use Redis adapter for Action Cable, caching, session store
+gem 'redis', '~> 5.0'
+gem 'hiredis', '~> 0.6.3' # Faster Redis adapter
+gem 'redis-namespace', '~> 1.11' # Namespacing for Redis keys
+gem 'sidekiq', '~> 7.1' # Background job processing with Redis

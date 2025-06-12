@@ -11,7 +11,11 @@ class JobsController < ApplicationController
   def index
     # @current_time = Time.current.to_s(:db) # 4 => 6.1
     @current_time = Time.current.to_fs(:db) # 4 => 7.0
-    @jobs = Job.all
+    # Cache all jobs for 15 minutes
+    @jobs = Rails.cache.fetch('all_jobs', expires_in: 15.minutes) do
+      Job.all.to_a
+    end
+    puts @jobs
   end
 
   def show

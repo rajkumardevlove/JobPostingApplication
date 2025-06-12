@@ -33,6 +33,12 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
+  config.cache_store = :redis_cache_store, {
+  url: ENV.fetch('REDIS_URL') { 'redis://localhost:6379/0' },
+  namespace: "job_posting_app:cache:#{Rails.env}",
+  expires_in: 1.day
+}
+
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
