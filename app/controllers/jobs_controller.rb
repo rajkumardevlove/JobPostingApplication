@@ -6,20 +6,23 @@ require "active_record"
 class JobsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_job, only: [:show, :edit, :update, :destroy]
-  before_action :authorize_admin!, except: [:index, :show]
+  # before_action :authorize_admin!, except: [:index, :show]
+  # Allow any signed-in user to new/create; only admins may edit/update/destroy
+  before_action :authorize_admin!, only: [:edit, :update, :destroy]
 
   def index
     # @current_time = Time.current.to_s(:db) # 4 => 6.1
     @current_time = Time.current.to_fs(:db) # 4 => 7.0
     @jobs = Job.all
-  end
+  end 
 
   def show
+    job_id = params[:id]
     # 4 (rails 7.1) Zeitwerk autoloads it
     service = MyCustomService.new
     puts service.call
     # 26. pass user with accessing property
-    user = Job.find_by(title: 'Java')
+    user = Job.find_by(id: job_id)
     # puts Job.where(id: user) # passing user object directly is deprecated in 6.1
     Job.where(title: user.title).to_a  # pass with title in 7.0
 
@@ -215,28 +218,32 @@ class JobsController < ApplicationController
     # url = user.avatar.service_url
 
     # rails 7.1
-    user.avatar.url # host is derived from `request.base_url`
+    # user.avatar.url # host is derived from `request.base_url`
+    # job = Job.first
+    # user = job.user
+    # user.avatar.url if user&.avatar&.attached?
 
     # 13 Result: BOTH files are attached in rails 7.0
     # @user.files.attach(io: ..., filename: "file1.pdf")
     # @user.files.attach(io: ..., filename: "file2.pdf")
 
     # rails 7.1
-    user.files = [
-    { io: File.open("new.pdf"), filename: "new.pdf" }
-    ]
+    # user.files = [
+    # { io: File.open("app\controllers\new.pdf"), filename: "new.pdf" }
+    # ]
 
     # 14 (rails 7.0) purge and purge_later
     # user.files.first.purge       # Worked
     # user.files.first.purge_later # Worked
 
     # Rails 7.1
-    user.documents.each(&:purge_later)  
+    # user.documents.each(&:purge_later)  
 
 
   end
 
   def new
+    # @job = Job.new
     @job = current_user.jobs.build
   end
 

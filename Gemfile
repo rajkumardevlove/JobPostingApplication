@@ -45,10 +45,11 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
 
-  gem 'rspec-rails', '~> 5.0'       # compatible with Rails 6.x
+  gem 'rspec-rails', '~> 6.1.1'       # compatible with Rails 6.x
   gem 'factory_bot_rails'           # handy for test data factories
   gem 'faker'
   gem 'rails-controller-testing'
+  gem 'simplecov', require: false
 end
 
 group :development do

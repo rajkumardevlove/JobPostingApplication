@@ -3,6 +3,7 @@ class User < ApplicationRecord
   has_many :applications
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+  has_one_attached :avatar
 
   ROLES = %w[admin user].freeze
 

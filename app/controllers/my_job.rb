@@ -7,7 +7,7 @@ class MyJob < ApplicationJob
   end
 
   after_enqueue do
-    puts "This will NOT run if enqueueing was aborted (because of the config)"
+    # puts "This will NOT run if enqueueing was aborted because of the config"
   end
 
   def perform(*args)

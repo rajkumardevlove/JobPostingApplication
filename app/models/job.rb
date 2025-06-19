@@ -1,11 +1,17 @@
 class Job < ApplicationRecord
-  # (7.0) 1. encrypts ssn
-  # encrypts :ssn
-  # (7.1) 2. encrypts at_work:true
-  #  encrypts :body, at_work: true
+  # Associations
   belongs_to :user
   has_many :applications
- # 5 (rails 7.0) requires composite_primary_keys gem 
+
+  # Validations
+  validates :title, :description, :company_name, :location, presence: true
+
+  # (7.0) Example: encrypts ssn
+  # encrypts :ssn
+
+  # (7.1) Example: encrypts with at_work: true
+  # encrypts :body, at_work: true
+
+  # Composite Primary Keys (commented)
   # self.primary_keys = :id, :date
-  # rails 7.1 need to declare primary keys
 end
